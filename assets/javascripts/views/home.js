@@ -7,7 +7,7 @@ define(['marionette'], function () {
             'click #test': 'gotoTest'
         },
 
-        initalize: function () {
+        initialize: function () {
             console.log('a view');
         },
 
