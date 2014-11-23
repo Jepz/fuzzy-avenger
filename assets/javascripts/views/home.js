@@ -12,7 +12,6 @@ define(['marionette'], function () {
         },
 
         gotoTest: function () {
-            console.log('test');
             Backbone.history.navigate('first', {trigger: true});
         }
     });

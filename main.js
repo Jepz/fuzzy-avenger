@@ -14,7 +14,6 @@ define(['jquery', 'underscore', 'backbone', 'marionette'], function () {
     MyApp.addInitializer(function () {
         require(['router'], function (router) {
             MyApp.AppRouter = router;
-            Backbone.history.start();
         });
 
         require(['assets/javascripts/views/home'], function (view) {

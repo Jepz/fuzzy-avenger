@@ -1,18 +1,20 @@
 define(['marionette'], function () {
-    var MyRouter = Backbone.Marionette.AppRouter.extend({
+    var MyRouter = Marionette.AppRouter.extend();
+
+    var router = new MyRouter({
         appRoutes: {
-            '': 'home',
             'first': 'first'
         },
-
-        home: function () {
-            console.log('home');
-        },
-
-        first: function () {
-            console.log('first');
+        controller: {
+            first: function () {
+                require(['assets/javascripts/views/test'], function (view) {
+                    MyApp.mainRegion.show(view);
+                });
+            }
         }
     });
-    window.MyRouter = MyRouter;
-    return MyRouter;
+
+    Backbone.history.start();
+
+    return router;
 });
