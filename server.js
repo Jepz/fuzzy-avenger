@@ -1,27 +1,60 @@
-var http = require("http");
-var url = require("url");
+var http = require('http'),
+    url = require('url'),
+    fs = require('fs'),
+    path = require('path');
 
 function onRequest(request, response) {
-    var pathname = url.parse(request.url).pathname;
-    console.log("Request for " + pathname + " received.");
+    var filePath = getFilePath(request.url),
+        contentType = getContentType(filePath);
 
-    //route(pathname);
+    console.log('sendHTML: ' + filePath);
 
-    response.writeHead(200, {"Content-Type": "text/plain"});
+    fs.exists(filePath, function (exists) {
+        if (exists) {
+            fs.readFile(filePath, function (error, content) {
+                if (error) {
+                    response.writeHead(500);
+                    response.end();
+                }
+                else {
+                    response.writeHead(200, { 'Content-Type': contentType });
+                    response.end(content, 'utf-8');
+                }
+            });
+        }
+        else {
+            response.writeHead(404);
+            response.end();
+        }
+    });
+}
 
-    switch (pathname) {
-        case '/':
-            response.write("Hello World");
-            break;
-        case '/apa':
-            response.write("Hello Apa");
-            break;
-        default:
-            response.write("Hello default");
+var getFilePath = function (url) {
+    var filePath = '.' + url;
+    if (url == '/') {
+        filePath = './index.html';
     }
 
-    response.end();
-}
+    console.log("url: " + url);
+
+    return filePath;
+};
+
+var getContentType = function (filePath) {
+    var extname = path.extname(filePath),
+        contentType = 'text/html';
+
+    switch (extname) {
+        case '.js':
+            contentType = 'text/javascript';
+            break;
+        case '.css':
+            contentType = 'text/css';
+            break;
+    }
+
+    return contentType;
+};
 
 http.createServer(onRequest).listen(8888);
 console.log("Server has started.");
