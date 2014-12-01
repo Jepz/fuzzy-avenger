@@ -3,9 +3,16 @@ define(['marionette'], function () {
 
     var router = new MyRouter({
         appRoutes: {
+            '': 'home',
             'first': 'first'
         },
         controller: {
+            home: function () {
+                require(['assets/javascripts/views/home'], function (view) {
+                    MyApp.mainRegion.show(view);
+                });
+            },
+
             first: function () {
                 require(['assets/javascripts/views/test'], function (view) {
                     MyApp.mainRegion.show(view);
@@ -14,7 +21,7 @@ define(['marionette'], function () {
         }
     });
 
-    Backbone.history.start();
+    Backbone.history.start({ pushState: true });
 
     return router;
 });

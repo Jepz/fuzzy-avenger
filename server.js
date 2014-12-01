@@ -31,11 +31,11 @@ function onRequest(request, response) {
 
 var getFilePath = function (url) {
     var filePath = '.' + url;
-    if (url == '/') {
+    if (url == '/' || url.indexOf('.js') === -1) {
         filePath = './index.html';
     }
 
-    console.log("url: " + url);
+    console.log("url: " + filePath);
 
     return filePath;
 };
